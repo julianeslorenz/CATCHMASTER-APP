@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Scan Fish</title>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="welcome">
+        <img src="images/mangdani.png" alt="Avatar" class="avatar" />
+        <div class="welcome-text">
+          <h1><b>Welcome!</b></h1>
+          <p>Mang Dani</p>
+        </div>
+      </div>
+      <div class="search-bar">
+        <div class="search-container">
+          <input type="text" placeholder="Search for Fisherman" />
+          <button class="search-button" type="submit">
+            <img src="images/searchicon.png" alt="Search Icon" class="search-icon" />
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="scanner-container">
+      <div class="camera-preview">
+        <video id="video" autoplay playsinline></video>
+        <div id="scan-placeholder">
+          <img src="https://placehold.co/400x300?text=Point+camera+at+fish&font=montserrat" alt="Placeholder" />
+        </div>
+        <canvas id="canvas" class="hidden"></canvas>
+      </div>
+
+      <div class="camera-controls">
+        <button class="camera-btn active" id="front-cam">Front</button>
+        <button class="camera-btn" id="back-cam">Back</button>
+      </div>
+
+      <button class="capture-btn" id="capture-btn"></button>
+
+      <div class="fish-form hidden" id="fish-form">
+        <div class="scan-result">
+          <div class="result-column">
+            <div class="result-label">Length</div>
+            <div class="result-value" id="length-value">-- cm</div>
+          </div>
+          <div class="result-column">
+            <div class="result-label">Weight</div>
+            <div class="result-value" id="weight-value">-- kg</div>
+          </div>
+          <div class="result-column">
+            <div class="result-label">Species</div>
+            <div class="result-value" id="species-value">--</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fish-species">Fish Species</label>
+          <select id="fish-species">
+            <option value="">Select species</option>
+            <option value="Salmon">Salmon</option>
+            <option value="Tuna">Tuna</option>
+            <option value="Cod">Cod</option>
+            <option value="Bass">Bass</option>
+            <option value="Trout">Trout</option>
+            <option value="Mackerel">Mackerel</option>
+            <option value="Sardine">Sardine</option>
+            <option value="Catfish">Catfish</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fish-length">Length (cm)</label>
+          <input type="number" id="fish-length" placeholder="Enter fish length" />
+        </div>
+
+        <div class="form-group">
+          <label for="fish-weight">Weight (kg)</label>
+          <input type="number" id="fish-weight" placeholder="Enter fish weight" step="0.01" />
+        </div>
+
+        <div class="form-group">
+          <label for="fish-location">Location</label>
+          <input type="text" id="fish-location" placeholder="Detecting location..." readonly />
+        </div>
+
+        <div class="form-group">
+          <label for="fish-date">Date & Time</label>
+          <input type="text" id="fish-date" readonly />
+        </div>
+
+        <button id="save-btn">Add to Fish Table</button>
+      </div>
+    </div>
+
+    <div id="fish-card-container">
+      <p class="no-fish">No fish scanned yet</p>
+    </div>
+    
+    <div class="save-all-container">
+      <button id="save-all-btn">Save All</button>
+    </div>
+
+        <footer>
+            <ul class="nav">
+                <a href="index.html">
+                <li>
+                    <img src="images/home.png" alt="Home Icon">
+                    Home
+                </li>
+                </a>
+                <a href="view-catch.html">
+                <li>
+                    <img src="images/fishcatch.png" alt="Fish Catch Icon">
+                    Fish Catch
+                </li>
+                </a>
+                <a href="view-history.html">
+                <li>
+                    <img src="images/viewhistory.png" alt="View History Icon">
+                    View History
+                </li>
+                </a>
+                <a href="profile.html">
+                <li>
+                    <img src="images/mangdani.png" alt="My Profile" class="footer-avatar">
+                    Me
+                </li>
+                </a>
+            </ul>
+        </footer>
+    
+  </main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const fishForm = document.getElementById('fish-form');
+    const fishSpecies = document.getElementById('fish-species');
+    const fishLength = document.getElementById('fish-length');
+    const fishWeight = document.getElementById('fish-weight');
+    const fishLocation = document.getElementById('fish-location');
+    const fishDate = document.getElementById('fish-date');
+    const saveBtn = document.getElementById('save-btn');
+    const frontCamBtn = document.getElementById('front-cam');
+    const backCamBtn = document.getElementById('back-cam');
+    const placeholder = document.getElementById('scan-placeholder');
+    const lengthValue = document.getElementById('length-value');
+    const weightValue = document.getElementById('weight-value');
+    const speciesValue = document.getElementById('species-value');
+    const modal = document.getElementById('confirmation-modal');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    let stream = null;
+    let currentCamera = 'environment';
+    let capturedImage = null;
+    let pendingData = null;
+
+    const fishSpeciesData = [
+      { name: 'Salmon', lengthToWeightRatio: 0.03 },
+      { name: 'Tuna', lengthToWeightRatio: 0.04 },
+      { name: 'Cod', lengthToWeightRatio: 0.025 },
+      { name: 'Bass', lengthToWeightRatio: 0.026 },
+      { name: 'Trout', lengthToWeightRatio: 0.027 },
+      { name: 'Mackerel', lengthToWeightRatio: 0.022 },
+      { name: 'Sardine', lengthToWeightRatio: 0.015 },
+      { name: 'Catfish', lengthToWeightRatio: 0.035 }
+    ];
+
+    function initCamera(cameraType = 'environment') {
+      stopCamera();
+      currentCamera = cameraType;
+      navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: cameraType,
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
+      }).then(s => {
+        stream = s;
+        video.srcObject = stream;
+        placeholder.classList.add('hidden');
+        video.classList.remove('hidden');
+      }).catch(err => {
+        console.error('Camera error:', err);
+        placeholder.classList.remove('hidden');
+        video.classList.add('hidden');
+      });
+    }
+
+    function stopCamera() {
+      if (stream) stream.getTracks().forEach(track => track.stop());
+    }
+
+    function updateDateTime() {
+      const now = new Date();
+      fishDate.value = now.toLocaleString();
+    }
+
+    function getLocation() {
+      const locationInput = document.getElementById('fish-location');
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            try {
+              const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+              if (!response.ok) throw new Error('Network response was not ok');
+              const data = await response.json();
+              if (data && data.display_name) {
+                locationInput.value = data.display_name;
+              } else {
+                locationInput.value = `Lat: ${lat.toFixed(5)}, Lng: ${lon.toFixed(5)}`;
+              }
+            } catch (error) {
+              console.error("Error fetching address:", error);
+              locationInput.value = `Lat: ${lat.toFixed(5)}, Lng: ${lon.toFixed(5)}`;
+            }
+          },
+          function (error) {
+            console.error("Geolocation error:", error.message);
+            locationInput.value = "Unable to retrieve location.";
+          }
+        );
+      } else {
+        locationInput.value = "Geolocation not supported.";
+      }
+    }
+
+    captureBtn.addEventListener('click', () => {
+      const randomLength = (Math.random() * 30 + 20).toFixed(1);
+      const selectedSpecies = fishSpeciesData[Math.floor(Math.random() * fishSpeciesData.length)];
+      const estimatedWeight = (randomLength * selectedSpecies.lengthToWeightRatio).toFixed(2);
+
+      lengthValue.textContent = `${randomLength} cm`;
+      weightValue.textContent = `${estimatedWeight} kg`;
+      speciesValue.textContent = selectedSpecies.name;
+
+      fishLength.value = randomLength;
+      fishWeight.value = estimatedWeight;
+      fishSpecies.value = selectedSpecies.name;
+
+      fishForm.classList.remove('hidden');
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+      capturedImage = canvas.toDataURL('image/jpeg');
+
+      updateDateTime();
+      getLocation(); // <-- location function call is here now
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const species = fishSpecies.value;
+      const length = fishLength.value;
+      const weight = fishWeight.value;
+      const location = fishLocation.value;
+      const date = fishDate.value;
+
+      if (!species || !length || !weight || !location || !date) {
+        alert('Please fill all fields');
+        return;
+      }
+
+      pendingData = { species, length, weight, location, date, image: capturedImage };
+      modal.classList.add('show');
+    });
+
+    confirmBtn.addEventListener('click', () => {
+      if (!pendingData) return;
+
+      const card = document.createElement('div');
+      card.classList.add('fish-card');
+      card.innerHTML = `
+        <img src="${pendingData.image || 'https://placehold.co/400x200?text=Fish'}" alt="Fish">
+        <h3>${pendingData.species}</h3>
+        <details>
+          <summary>View Details</summary>
+          <div class="details">
+            <p><strong>Length:</strong> ${pendingData.length} cm</p>
+            <p><strong>Weight:</strong> ${pendingData.weight} kg</p>
+            <p><strong>Location:</strong> ${pendingData.location}</p>
+            <p><strong>Date:</strong> ${pendingData.date}</p>
+          </div>
+        </details>
+      `;
+
+      const noFishMsg = document.querySelector('.no-fish');
+      if (noFishMsg) noFishMsg.remove();
+
+      document.getElementById('fish-card-container').appendChild(card);
+
+      fishForm.classList.add('hidden');
+      fishSpecies.selectedIndex = 0;
+      fishLength.value = '';
+      fishWeight.value = '';
+      fishLocation.value = '';
+      fishDate.value = '';
+      capturedImage = null;
+      pendingData = null;
+      modal.classList.remove('show');
+      initCamera(currentCamera);
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      modal.classList.remove('show');
+      pendingData = null;
+    });
+
+    fishLength.addEventListener('input', () => {
+      const speciesObj = fishSpeciesData.find(f => f.name === fishSpecies.value);
+      if (speciesObj && fishLength.value) {
+        fishWeight.value = (fishLength.value * speciesObj.lengthToWeightRatio).toFixed(2);
+      }
+    });
+
+    fishSpecies.addEventListener('change', () => {
+      if (fishLength.value) {
+        const speciesObj = fishSpeciesData.find(f => f.name === fishSpecies.value);
+        if (speciesObj) {
+          fishWeight.value = (fishLength.value * speciesObj.lengthToWeightRatio).toFixed(2);
+        }
+      }
+    });
+
+    frontCamBtn.addEventListener('click', () => {
+      initCamera('user');
+      frontCamBtn.classList.add('active');
+      backCamBtn.classList.remove('active');
+    });
+
+    backCamBtn.addEventListener('click', () => {
+      initCamera('environment');
+      backCamBtn.classList.add('active');
+      frontCamBtn.classList.remove('active');
+    });
+
+    initCamera(currentCamera);
+  });
+</script>
+
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+      <div class="modal-content">
+        <p>Are you sure you want to add this fish to the table?</p>
+        <div class="modal-buttons">
+          <button id="confirm-btn">Yes</button>
+          <button id="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Add Fish</title>
+</head>
+<body>
+    <header>
+        <div class="welcome">
+            <img src="images/mangdani.png" alt="Avatar" class="avatar">
+            <div class="welcome-text">
+                <h1><b>Welcome!</b></h1>
+                <p>Mang Dani</p>
+            </div>
+        </div>
+        <div class="search-bar">
+            <div class="search-container">
+                <input type="text" placeholder="Search for Fish">
+                <button class="search-button" type="submit">
+                    <img src="images/searchicon.png" alt="Search Icon" class="search-icon">
+                </button>
+            </div>
+        </div>
+    </header>
+
+        <main>
+            <section class="form-section">
+                <form id="fishForm">
+                    <h2 style="margin: 0 0 10px 0; color: #223a84; font-family: 'Montserrat', sans-serif;">Add Fish Catch</h2>
+
+                    <label for="species">Fish Species:</label>
+                    <select id="species" name="species" required>
+                        <option value="">Select species</option>
+                        <option value="Bangus">Bangus</option>
+                        <option value="Tilapia">Tilapia</option>
+                        <option value="Tulingan">Tulingan</option>
+                        <option value="Tamban">Tamban</option>
+                        <option value="Galunggong">Galunggong</option>
+                    </select>
+
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" placeholder="Enter number of fish" required>
+
+                    <label for="kilogram">Kilogram:</label>
+                    <input type="number" id="kilogram" name="kilogram" step="0.01" min="0.01" placeholder="Enter total weight in kg" required>
+
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" placeholder="Detecting location..." readonly required>
+
+                    <label for="datetime">Date and Time:</label>
+                    <input type="datetime-local" id="datetime" name="datetime" readonly>
+
+                    <label for="camera">Add Photo:</label>
+                    <input type="file" accept="image/*" capture="environment" id="camera" required>
+
+                    <button type="submit">Save</button>
+                </form>
+            </section>
+        </main>
+
+
+    <footer>
+        <ul class="nav">
+            <a href="index.html">
+                <li>
+                    <img src="images/home.png" alt="Home Icon">
+                    Home
+                </li>
+            </a>
+                <a href="view-catch.html">
+                    <li>
+                        <img src="images/fishcatch.png" alt="Fish Catch Icon">
+                        Fish Catch
+                    </li>
+                </a>
+                <a href="view-history.html">
+                    <li>
+                        <img src="images/viewhistory.png" alt="View History Icon">
+                        View History
+                    </li>
+                </a>
+            <a href="profile.html">
+                <li>
+                    <img src="images/mangdani.png" alt="My Profile" class="footer-avatar">
+                    Me
+                </li>
+            </a>
+        </ul>
+    </footer>
+
+    <script>
+        const form = document.getElementById('fishForm');
+        const datetimeInput = document.getElementById('datetime');
+
+        function updateDateTime() {
+            const now = new Date();
+            datetimeInput.value = now.toISOString().slice(0, 16);
+        }
+
+        function getLocation() {
+            const locationInput = document.getElementById('location');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async function (position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        try {
+                            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+                            const data = await response.json();
+                            locationInput.value = data.display_name || `Lat: ${lat}, Lng: ${lon}`;
+                        } catch (error) {
+                            locationInput.value = `Lat: ${lat}, Lng: ${lon}`;
+                        }
+                    },
+                    function () {
+                        locationInput.value = "Unable to retrieve location.";
+                    }
+                );
+            } else {
+                locationInput.value = "Geolocation not supported.";
+            }
+        }
+
+        updateDateTime();
+        getLocation();
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const species = document.getElementById('species').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const kilogram = parseFloat(document.getElementById('kilogram').value);
+            const location = document.getElementById('location').value;
+            const datetime = document.getElementById('datetime').value;
+            const file = document.getElementById('camera').files[0];
+
+            if (!species || isNaN(quantity) || quantity <= 0 || isNaN(kilogram) || kilogram <= 0 || !location || !datetime || !file) {
+                alert("Please fill in all fields correctly.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                sessionStorage.setItem("species", species);
+                sessionStorage.setItem("quantity", quantity);
+                sessionStorage.setItem("kilogram", kilogram.toFixed(2));
+                sessionStorage.setItem("location", location);
+                sessionStorage.setItem("datetime", datetime);
+                sessionStorage.setItem("photoDataURL", reader.result);
+
+                window.location.href = "confirm-add-fish.html";
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>

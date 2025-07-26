@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Confirmation</title>
+</head>
+<body>
+    <header>
+        <div class="welcome">
+            <img src="images/mangdani.png" alt="Avatar" class="avatar">
+            <div class="welcome-text">
+                <h1><b>Welcome!</b></h1>
+                <p>Mang Dani</p>
+            </div>
+        </div>
+        <div class="search-bar">
+            <div class="search-container">
+                <input type="text" placeholder="Search for Fisherman">
+                <button class="search-button" type="submit">
+                    <img src="images/searchicon.png" alt="Search Icon" class="search-icon">
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <main>
+        <section class="form-section">
+            <form id="confirmForm">
+                <h2>Confirm Fish Catch</h2>
+                <div id="previewImageContainer"></div>
+                <p><strong>Species:</strong> <span id="confirmSpecies"></span></p>
+                <p><strong>Quantity:</strong> <span id="confirmQuantity"></span></p>
+                <p><strong>Kilogram:</strong> <span id="confirmKilogram"></span></p>
+                <p><strong>Location:</strong> <span id="confirmLocation"></span></p>
+                <p><strong>Date & Time:</strong> <span id="confirmDatetime"></span></p>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" onclick="window.history.back()">Go Back</button>
+                    <button type="submit">Confirm & Save</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+
+    <footer>
+        <ul class="nav">
+            <a href="index.html">
+                <li>
+                    <img src="images/home.png" alt="Home Icon">
+                    Home
+                </li>
+            </a>
+                <a href="view-catch.html">
+                    <li>
+                        <img src="images/fishcatch.png" alt="Fish Catch Icon">
+                        Fish Catch
+                    </li>
+                </a>
+                <a href="view-history.html">
+                    <li>
+                        <img src="images/viewhistory.png" alt="View History Icon">
+                        View History
+                    </li>
+                </a>
+            <a href="profile.html">
+                <li>
+                    <img src="images/mangdani.png" alt="My Profile" class="footer-avatar">
+                    Me
+                </li>
+            </a>
+        </ul>
+    </footer>
+
+    <script>
+        // Retrieve data from sessionStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('confirmSpecies').textContent = sessionStorage.getItem('species');
+            document.getElementById('confirmQuantity').textContent = sessionStorage.getItem('quantity');
+            document.getElementById('confirmKilogram').textContent = sessionStorage.getItem('kilogram');
+            document.getElementById('confirmLocation').textContent = sessionStorage.getItem('location');
+            document.getElementById('confirmDatetime').textContent = sessionStorage.getItem('datetime');
+
+            const imageData = sessionStorage.getItem('photoDataURL');
+            if (imageData) {
+                const img = document.createElement('img');
+                img.src = imageData;
+                img.style.maxWidth = '100%';
+                img.style.borderRadius = '8px';
+                document.getElementById('previewImageContainer').appendChild(img);
+            }
+        });
+
+        document.getElementById('confirmForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert("Fish Catch Confirmed and Saved!");
+            sessionStorage.clear();
+            window.location.href = "add-fish.html";
+        });
+    </script>
+</body>
+</html>

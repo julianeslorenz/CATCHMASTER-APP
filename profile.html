@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="profile.css">
+    <title>Profile</title>
+</head>
+
+<body>
+      <header class="profile-header">
+        <img src="images/mangdani.png" alt="Profile Picture" class="profile-avatar" id="profilePic">
+        <div class="edit-icon" onclick="openModal()">
+          <span>Change Profile Picture</span>
+        </div>
+        <div class="fisherman-name">Danilo Suarez</div>
+        <div class="fisherman-role">Head Fisherfolk</div>
+      </header>
+
+      <div class="modal" id="profileModal">
+        <div class="modal-content">
+          <p><strong>Edit Profile Picture</strong></p>
+          <button onclick="alert('Upload function coming soon')">Upload a Picture</button>
+          <button onclick="alert('Remove function coming soon')">Remove Profile Picture</button>
+          <button onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+
+      <main class="profile-body">
+      <!-- BASIC INFO -->
+      <section class="profile-section">
+        <h2>Basic Info</h2>
+        <div class="info-row">
+          <h3>Name</h3>
+          <p>Danilo Suarez</p>
+        </div>
+        <div class="info-row">
+          <h3>Birthday</h3>
+          <p>September 22, 2004</p>
+        </div>
+        <div class="info-row">
+          <h3>Gender</h3>
+          <p>Male</p>
+        </div>
+        <div class="info-row">
+          <h3>Address</h3>
+          <p>Sitio Grace Park 3, Brgy. Sildora, Agdangan, Quezon</p>
+        </div>
+      </section>
+
+      <!-- CONTACT INFO -->
+      <section class="profile-section">
+        <h2>Contact Info</h2>
+        <div class="info-row">
+          <h3>Telephone No.</h3>
+          <p>+63 951 241 3906</p>
+        </div>
+        <div class="info-row">
+          <h3>Email Address</h3>
+          <p>danilosuarez@gmail.com</p>
+        </div>
+      </section>
+
+      <!-- GENERAL PREFERENCES -->
+      <section class="profile-section">
+        <h2>General Preferences</h2>
+        <a href="#" class="button-row" id="openLanguageModal">
+          <span>Language</span>
+        </a>
+        <a href="accessibility.html" class="button-row">
+          <span>Accessibility</span>
+        </a>
+      </section>
+
+      <!-- SUPPORT -->
+      <section class="profile-section">
+        <h2>Support</h2>
+        <a href="help.html" class="button-row">
+          <span>Need Help?</span>
+        </a>
+        <a href="feedback.html" class="button-row">
+          <span>Send us feedback!</span>
+        </a>
+      </section>
+
+      <!-- COPYRIGHT -->
+    <div class="copyright-note">
+      &copy; 2025 CatchMaster App. All rights reserved.
+    </div>
+    </main>
+
+
+        <footer>
+            <ul class="nav">
+                <a href="index.html">
+                <li>
+                    <img src="images/home.png" alt="Home Icon">
+                    Home
+                </li>
+                </a>
+                <a href="view-catch.html">
+                    <li>
+                        <img src="images/fishcatch.png" alt="Fish Catch Icon">
+                        Fish Catch
+                    </li>
+                </a>
+                <a href="view-history.html">
+                    <li>
+                        <img src="images/viewhistory.png" alt="View History Icon">
+                        View History
+                    </li>
+                </a>
+                <a href="profile.html">
+                <li>
+                    <img src="images/mangdani.png" alt="My Profile" class="footer-avatar">
+                    Me
+                </li>
+                </a>
+            </ul>
+        </footer>
+
+        <div id="languageModal" class="modal-overlay">
+          <div class="modal-content">
+            <h2>Select Language</h2>
+            <div class="language-option" data-lang="en">
+              English <span class="checkmark">&#10003;</span>
+            </div>
+            <div class="language-option" data-lang="fil">
+              Filipino (Tagalog) <span class="checkmark" style="display: none">&#10003;</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="accessibilityModal" class="modal-overlay">
+          <div class="modal-drag"></div>
+          <div class="modal-content">
+            <h2>Accessibility</h2>
+
+            <div class="accessibility-option">
+              <label for="textSizeSelect">Text Size</label>
+              <select id="textSizeSelect">
+                <option value="normal">Normal</option>
+                <option value="large">Large</option>
+                <option value="xlarge">Extra Large</option>
+              </select>
+            </div>
+
+            <div class="accessibility-option">
+              <label class="toggle-switch">
+                <input type="checkbox" id="contrastToggle">
+                <span class="slider"></span>
+                <span class="label-text">Apply High Contrast</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+  <script>
+  const modal = document.getElementById('languageModal');
+  const openBtn = document.getElementById('openLanguageModal');
+  const options = document.querySelectorAll('.language-option');
+
+  // Default selected language is English
+  let currentLang = 'en';
+
+  openBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal.classList.add('active');
+  });
+
+  options.forEach(option => {
+    option.addEventListener('click', () => {
+      const selectedLang = option.getAttribute('data-lang');
+
+      if (selectedLang !== currentLang) {
+        if (selectedLang === 'fil') {
+          const script = document.createElement('script');
+          script.src = 'js/lang-fil.js';
+          document.body.appendChild(script);
+        } else {
+          location.reload(); // Reload to return to default English
+        }
+        currentLang = selectedLang;
+      }
+
+      // Update checkmark visibility
+      options.forEach(opt => {
+        opt.querySelector('.checkmark').style.display = 'none';
+      });
+      option.querySelector('.checkmark').style.display = 'inline';
+
+      modal.classList.remove('active');
+    });
+  });
+
+    function openModal() {
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('profileModal').style.display = 'none';
+    }
+
+const accessibilityModal = document.getElementById('accessibilityModal');
+const accessibilityTrigger = document.querySelector('a[href="accessibility.html"]');
+
+accessibilityTrigger.addEventListener('click', function (e) {
+  e.preventDefault();
+  accessibilityModal.classList.add('active');
+});
+
+document.getElementById('textSizeSelect').addEventListener('change', function () {
+  const size = this.value;
+  document.body.style.fontSize = size === 'normal' ? '16px' : size === 'large' ? '18px' : '20px';
+});
+
+document.getElementById('contrastToggle').addEventListener('change', function () {
+  document.body.classList.toggle('high-contrast', this.checked);
+});
+
+// Drag to close functionality
+let startY = 0;
+let currentY = 0;
+let isDragging = false;
+
+const dragHandle = accessibilityModal.querySelector('.modal-drag');
+
+accessibilityModal.addEventListener('touchstart', (e) => {
+  if (e.target === dragHandle) {
+    startY = e.touches[0].clientY;
+    isDragging = true;
+  }
+});
+
+accessibilityModal.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+  currentY = e.touches[0].clientY;
+  const deltaY = currentY - startY;
+  if (deltaY > 30) {
+    accessibilityModal.classList.remove('active');
+    isDragging = false;
+  }
+});
+
+accessibilityModal.addEventListener('touchend', () => {
+  isDragging = false;
+});
+
+  </script>
+
+</body>
+</html>
+

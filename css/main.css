@@ -1,0 +1,908 @@
+/* Unified and optimized CSS for consistency across pages */
+
+:root {
+  --primary: #223a84;
+  --secondary: #ffcc00;
+  --dark: #1a1a1a;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('../images/bg1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+m:root {
+  --primary: #223a84;
+}
+
+main {
+  padding-bottom: 80px;
+}
+
+header {
+  background-color: var(--primary);
+  color: white;
+  padding: 30px 20px; 
+  border-radius: 0;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.welcome img.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.welcome-text h1,
+.welcome-text p {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.search-container input[type="text"] {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.search-button {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (min-width: 768px) {
+  .search-container input[type="text"] {
+    font-size: 1.1rem;
+    padding: 14px 50px 14px 20px;
+  }
+
+  .search-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .search-button {
+    right: 20px;
+  }
+}
+
+.section-heading {
+    margin: 20px;
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px black;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    justify-items: center;
+    margin: 0 20px 20px;
+}
+
+.category-card {
+    background-color: rgba(34, 58, 132, 0.9);
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+    text-align: center;
+    height: 130px;
+    width: 128px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    backdrop-filter: blur(2px)
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+    background-color: #2d4cb3;
+    text-decoration: none;
+}
+
+.category-card img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.category-card p {
+    margin: 5px;
+}
+
+.recent-catch {
+  background-color: rgba(130, 152, 181, 0.5);
+  margin: 20px;
+  padding: 15px;
+  border-radius: 15px;
+  backdrop-filter: blur(4px);
+}
+
+.recent-catch .catch-item {
+  background-color: rgba(130, 152, 181, 0.9);
+    margin: 10px 0;
+    padding: 10px;
+    text-align: left;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.recent-catch .catch-item:hover {
+    transform: scale(1.02);
+    background-color: #dfe4ea;
+}
+
+.recent-catch h2 {
+    color: white;
+    font-weight: 800;
+    margin-top: 8px;
+    margin-bottom: 18px;
+    text-shadow: 2px 2px 4px black;
+}
+
+.recent-catch .catch-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: #223a84;
+    color: white;
+    text-align: center;
+    padding: 12px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.footer-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+.nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav li {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    max-width: 70px;
+    text-align: center;
+    padding: 4px;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.nav li:hover img {
+    transform: scale(1.1);
+}
+
+.nav li:hover {
+    color: #ffd700;
+}
+
+.nav img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.nav a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav li.active {
+    color: #ffd700;
+    transform: scale(1.1);
+}
+
+.nav li.active img {
+    transform: scale(2.4);
+}
+
+/* css for index */
+
+
+
+
+
+
+
+
+
+/* css for add fish */
+
+.form-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.form-section form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 auto;
+}
+
+form h2 {
+    font-size: 1.5rem;
+    color: #223a84;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="datetime-local"],
+form input[type="file"],
+form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #223a84;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #1a2f66;
+}
+
+/* css for add fish */
+
+
+
+
+
+
+
+
+
+
+/* css for view catch summary */
+ 
+.summary-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    backdrop-filter: blur(6px);
+    color: white;
+}
+
+.fisherman-summary {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: rgba(34, 58, 132, 0.8);
+    border-radius: 12px;
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.summary-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.graph-placeholder {
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px dashed white;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #f1f1f1;
+}
+
+.report-btn {
+    background-color: #ffd700;
+    color: #223a84;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.report-btn:hover {
+    background-color: #ffcc00;
+}
+
+/* css for view catch summary */
+
+
+
+
+
+
+
+
+/* css for fish catch */
+
+.fish-catch {
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+}
+
+.fish-catch .catch-item {
+    background-color: #e9ecef;
+    margin: 10px 0;
+    padding: 10px;
+    text-align: left;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.catch-header {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    cursor: pointer;
+}
+
+.catch-header img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.catch-details {
+    display: none;
+    margin-top: 5px;
+    padding-left: 10px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.catch-item.active .catch-details {
+    display: block;
+}
+
+.fish-catch h2 {
+    color: white;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px black;
+}
+
+/* css for fish catch */
+
+
+
+
+
+
+
+
+/* css for scan fish */
+
+.scanner-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#scan-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  text-align: center;
+}
+
+.camera-preview {
+  width: 100%;
+  height: 300px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.camera-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.camera-btn {
+  background-color: #e8e8e8;
+  color: var(--dark);
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.camera-btn.active,
+.camera-btn:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+.capture-btn {
+  display: block;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: var(--secondary);
+  border: 5px solid white;
+  margin: 20px auto;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.capture-btn:active {
+  transform: scale(0.95);
+}
+
+.capture-btn::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.fish-form {
+  margin-top: 25px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+#save-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#save-btn:hover {
+  background-color: #1d2d6c;
+}
+
+.fish-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 20px;
+    max-width: 500px;
+}
+
+.fish-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.fish-card h3 {
+     margin: 10px 0 5px;
+    color: var(--primary);
+}
+
+.fish-card .details {
+    padding: 10px;
+}
+
+.fish-card summary {
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.no-fish {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 25px;
+    padding: 5px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.modal-buttons button {
+  padding: 8px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#confirm-btn {
+  background-color: #2b7a78;
+  color: white;
+}
+
+#cancel-btn {
+  background-color: #ccc;
+}
+
+
+.save-all-container {
+  text-align: right;
+  margin: 30px;
+}
+
+#save-all-btn {
+  background-color: #223a84;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s;
+}
+
+#save-all-btn:hover {
+  background-color: #1a2f6b;
+}
+
+/* css for scan fish */
+
+
+
+
+
+
+
+/* css for fish history */
+
+.fish-history {
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+}
+
+.fish-history h2 {
+    color: white;
+    font-weight: bolder;
+    text-shadow: 2px 2px 4px black;
+}
+
+.month-group {
+    margin: 10px 0;
+}
+
+.fish-catch-item {
+    background-color: #e9ecef;
+    margin: 10px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.fish-catch-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.fish-catch-header img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.fish-catch-details {
+    display: none;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #f9fafb;
+}
+
+.fish-catch-item.active .fish-catch-details {
+    display: block;
+}
+
+/* css for fish history */
+
+
+
+
+
+
+
+
+/* css for fish species */
+.fish-species {
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+    max-width: 800px;
+    margin: auto;
+}
+
+.fish-species h2 {
+    text-align: center;
+    color: #223a84;
+    margin-bottom: 20px;
+}
+
+.species-card {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.species-card:hover {
+    background-color: #dfe4ea;
+    transform: scale(1.02);
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-header img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 2px solid #2d4cb3;
+    margin-bottom: 10px;
+}
+
+.card-header p {
+    font-size: 1.3rem;
+    color: #223a84;
+    margin: 0;
+}
+
+details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #223a84;
+    margin-top: 10px;
+    list-style: none;
+}
+
+details[open] summary::after {
+    content: "▲";
+    float: right;
+}
+
+details summary::after {
+    content: "▼";
+    float: right;
+}
+
+details ul {
+    margin-top: 10px;
+    padding-left: 20px;
+    list-style: disc;
+}
+
+details li {
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+
+/* css for fish species */
+
